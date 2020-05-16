@@ -6,7 +6,7 @@
  *
  * ************************************************************************** */
 
-#include <termios.h>
+#include <curses.h>
 
 /* ************************************************************************** 
  * Map structure
@@ -15,8 +15,7 @@
 #define FIXED_MAP_WIDTH  16
 #define FIXED_MAP_HEIGHT 16
 
-struct 
-GameMap
+struct GameMap
 {
 	int   MapWidth;
 	int   MapHeight;
@@ -32,12 +31,12 @@ GameMap
 
 #define MAX_FPS 60
 
-struct 
-GameConfig
+struct GameConfig
 {
 	int             ScreenWidth;        // Terminal number of columns
 	int             ScreenHeight;       // Terminal number of rows
 	wchar_t        *Screen;             // Screen buffer 
+    WINDOW         *Window;             // The window to draw to
     float           RenderDepth;        // Maximum rendering depth for ray
     float           RayStepSize;        // The step size for ray casting
     float           PlayerFOV;          // Player field of view
@@ -45,8 +44,6 @@ GameConfig
     float           PlayerY;            // Player Y position
     float           PlayerDirection;    // Player direction
     float           PlayerSpeed;        // Player walking speed
-	struct termios  current_terminal;   // Attributes for the game terminal
-	struct termios  original_terminal;  // Attributes for the original terminal
 	struct GameMap  GameMap;            // Structure for the game map
 } GameConfig;
 

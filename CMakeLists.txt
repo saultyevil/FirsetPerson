@@ -17,6 +17,14 @@ set(SOURCE_FILES
         src/Render.c
 )
 
+# The curses library is stored in various places depending on system
+if(UNIX AND NOT APPLE)
+        find_package(Curses REQUIRED)
+elseif(APPLE)
+        include_directories(/usr/local/opt/ncurses/include)
+        link_directories(/usr/local/opt/ncurses/lib)
+endif()
+
 # Create the executable and link the libraries
 add_executable(SimpleFP ${SOURCE_FILES})
-target_link_libraries(SimpleFP m)
+target_link_libraries(SimpleFP m ncursesw)

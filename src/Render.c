@@ -8,7 +8,6 @@
 
 #include <math.h>
 #include <stdbool.h>
-#include <unistd.h>
 #include <wchar.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,24 +28,25 @@ RefreshScreen (void)
   int      X, Y;
   int      TestX, TestY;
   int      CeilingHeight, FloorHeight;
-  int      ScreenWidth                 = GameConfig.ScreenWidth;
-  int      ScreenHeight                = GameConfig.ScreenHeight;
-  int      MapWidth                    = GameConfig.GameMap.MapWidth;
-  int      MapHeight                   = GameConfig.GameMap.MapHeight;
   bool     HitWall, HitBoundary;
   float    Distance, DistanceToWall; 
   float    EyeX, EyeY;
   float    RayAngle;
-  float    RenderDepth                 = GameConfig.RenderDepth;
-  float    RayStepSize                 = GameConfig.RayStepSize; 
-  float    PlayerFOV                   = GameConfig.PlayerFOV;
-  float    PlayerX                     = GameConfig.PlayerX;
-  float    PlayerY                     = GameConfig.PlayerY;
-  float    PlayerDirection             = GameConfig.PlayerDirection;
-  float    PlayerSpeed                 = GameConfig.PlayerSpeed;
-  char    *Map                         = GameConfig.GameMap.Map;
   wchar_t  Shade;
-  wchar_t *Screen                      = GameConfig.Screen;
+
+  int      ScreenWidth     = GameConfig.ScreenWidth;
+  int      ScreenHeight    = GameConfig.ScreenHeight;
+  int      MapWidth        = GameConfig.GameMap.MapWidth;
+  int      MapHeight       = GameConfig.GameMap.MapHeight;
+  float    RenderDepth     = GameConfig.RenderDepth;
+  float    RayStepSize     = GameConfig.RayStepSize; 
+  float    PlayerFOV       = GameConfig.PlayerFOV;
+  float    PlayerX         = GameConfig.PlayerX;
+  float    PlayerY         = GameConfig.PlayerY;
+  float    PlayerDirection = GameConfig.PlayerDirection;
+  char    *Map             = GameConfig.GameMap.Map;
+  wchar_t *Screen          = GameConfig.Screen;
+  WINDOW  *Window          = GameConfig.Window;
 
   for (X = 0; X < ScreenWidth; ++X)
   {
@@ -71,13 +71,14 @@ RefreshScreen (void)
         HitWall = true;
         DistanceToWall = RenderDepth;
       }
+      // The Ray is in bounds and has hit a wall
       else
       {
-        // The Ray is in bounds and has hit a wall
+
         if (Map[TestY * MapWidth + TestX] == '#')
         {
           HitWall = true;
-          // TODO: test for boundaries
+          // TODO: test for wall boundaries
         }
       }
     }
@@ -98,15 +99,17 @@ RefreshScreen (void)
   
     for (Y = 0; Y < ScreenHeight; ++Y)
     {
-      // The ceiling starts at 0
+      // Draw the ceiling - note that the ceiling starts at row 0
       if (Y <= CeilingHeight)
       {
         Screen[Y * ScreenWidth + X] = ' ';
+        mvwprintw (Window, Y, X, "%lc", ' ');
       }
       // Draw the wall
       else if (Y > CeilingHeight && Y <= FloorHeight)
       {  
         Screen[Y * ScreenWidth + X] = Shade;
+        mvwprintw (Window, Y, X, "%lc", Shade);
       }
       // Draw the floor and shade depending on distance
       else
@@ -118,17 +121,12 @@ RefreshScreen (void)
         else if (Distance < 0.90) Shade = '-';
         else                      Shade = ' ';
         Screen[Y * ScreenWidth + X] = Shade; 
+        mvwprintw (Window, Y, X, "%lc", Shade);
       }
     }
   }
 
+  wrefresh (Window);
   Screen[ScreenWidth * ScreenHeight] = '\0';
   GameConfig.Screen = Screen;
-
-  for (int i = 0; i < ScreenWidth * ScreenHeight; ++i)
-  {
-    wprintf (L"%lc", GameConfig.Screen[i]);
-    if ((i + 1) % ScreenWidth == 0)
-      printf ("\n");
-  } 
 }

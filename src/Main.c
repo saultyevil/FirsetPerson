@@ -27,7 +27,7 @@ void
 GameInit (void)
 {
   atexit (TerminalRevert);
-  signal (SIGWINCH, TerminalUpdateSize);
+  // signal (SIGWINCH, TerminalUpdateSize);
 
   GameConfig.PlayerFOV       = M_PI / 4.0;
   GameConfig.PlayerX         = 1.5;

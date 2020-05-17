@@ -7,6 +7,8 @@ font sizes.
 I have tested this using a monospaced font (i.e. monospace regular) with a font
 size of 12 pixels.
 
+![Screenshot of the game](firstPerson.png)
+
 ## Building and Requirements
 
 This project uses NCurses 5 to write to the terminal window and requires your

@@ -44,5 +44,5 @@ $ make
 
 This project was inspired by javidx9's 
 [YouTube video](https://www.youtube.com/watch?v=xW8skO7MFYw) and the ray casting
-algorithm which he implemented. Here, I have, attempted to at least, implement a
-version of this algorithm in C instead of C++.
+algorithm which he implemented. Here, I have, attempted to at least, implemented
+a version of his algorithm in C instead of C++.

@@ -21,17 +21,20 @@
  * ************************************************************************** */
 
 void
-GameInit (void)
+gameInit (void)
 {
-  gameConfig.playerFOV       = M_PI / 4.0;
-  gameConfig.playerX         = 1.5;
-  gameConfig.playerY         = 1.5;
-  gameConfig.playerDirection = 0.0;
-  gameConfig.playerSpeed     = 100.0;
-  gameConfig.renderDepth     = 16.0;
-  gameConfig.rayStepSize     = 0.1;
-  gameConfig.screen          = NULL;
-  gameConfig.GameMap         = MAP_INIT;
+  gameConfig.playerFOV         = M_PI / 4.0;
+  gameConfig.playerX           = 1.5;
+  gameConfig.playerY           = 1.5;
+  gameConfig.playerDirection   = 0.0;
+  gameConfig.playerSpeed       = 100.0;
+  gameConfig.renderDepth       = 16.0;
+  gameConfig.rayStepSize       = 0.1;
+  gameConfig.gameMap.mapWidth  = 0;
+  gameConfig.gameMap.mapHeight = 0;
+  gameConfig.gameMap.mapPoints = 0;
+  gameConfig.gameMap.map       = NULL;
+
   atexit (terminalRevert);
 }
 
@@ -51,7 +54,7 @@ main (void)
   struct timeval endTime;
 
   terminalInit ();
-  GameInit ();
+  gameInit ();
   mapInit ();
 
   gettimeofday (&startTime, NULL);

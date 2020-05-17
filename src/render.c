@@ -96,7 +96,7 @@ refreshScreen (void)
     // Calculate the distance to the ceiling and floor
     ceilingHeight = screenHeight / 2.0 - screenHeight / distanceToWall;
     floorHeight = screenHeight - ceilingHeight;
-  
+
     for (y = 0; y < screenHeight; ++y)
     {
       // Draw the ceiling - note that the ceiling starts at row 0

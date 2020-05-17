@@ -20,7 +20,7 @@ struct gameMap
 	int      mapWidth;                  // The width of the map
 	int      mapHeight;                 // The height of the map
 	int      mapPoints;                 // The number of map points (width * height)
-	wchar_t *map;                       // The map stored as a 1D whcar_t array
+	char    *map;                       // The map stored as a 1D whcar_t array
 };
 
 #define MAP_INIT {0, 0, 0, NULL}

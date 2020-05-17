@@ -29,19 +29,19 @@ terminalInit (void)
 
   setlocale (LC_ALL, "");
 
-  initscr (); 
+  initscr  (); 
   getmaxyx (stdscr, gameConfig.screenHeight, gameConfig.screenWidth);
-  noecho ();
-  cbreak ();
-  keypad (stdscr, FALSE);  // Use NCurses defined FALSE, just in case ;-)
+  noecho   ();
+  cbreak   ();
+  keypad   (stdscr, FALSE);  // Use NCurses defined FALSE, just in case ;-)
   curs_set (0);
-  refresh ();
+  refresh  ();
 
   // Allocate memory for the screen buffer
   screenSize        = gameConfig.screenHeight * gameConfig.screenWidth;
   gameConfig.screen = malloc (screenSize * sizeof *gameConfig.screen + 1);
   gameConfig.window = newwin (gameConfig.screenHeight, gameConfig.screenWidth, 0, 0);
-  keypad (gameConfig.window, TRUE);
+  keypad  (gameConfig.window, TRUE);
   nodelay (gameConfig.window, TRUE);
 }
 
@@ -80,6 +80,6 @@ terminalUpdateSize (int sig)
   (void) sig;
 
   terminalRevert ();
-  terminalInit ();
-  refreshScreen ();
+  terminalInit   ();
+  refreshScreen  ();
 }

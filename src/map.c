@@ -23,8 +23,8 @@
 void
 mapInit (void)
 {
-  struct gameMap map = MAP_INIT;
-  char  *theMap =
+  struct  gameMap map = MAP_INIT;
+  char   *theMap      =
     "################"
     "#...........#..#"
     "#...........#..#"

@@ -31,6 +31,7 @@ GameInit (void)
   gameConfig.renderDepth     = 16.0;
   gameConfig.rayStepSize     = 0.1;
   gameConfig.screen          = NULL;
+  gameConfig.GameMap         = MAP_INIT;
   atexit (terminalRevert);
 }
 
@@ -49,8 +50,8 @@ main (void)
   struct timeval startTime;
   struct timeval endTime;
 
-  GameInit ();
   terminalInit ();
+  GameInit ();
   mapInit ();
 
   gettimeofday (&startTime, NULL);
@@ -59,9 +60,9 @@ main (void)
   {
     gettimeofday (&endTime, NULL);
     timeDifference = (endTime.tv_usec - startTime.tv_usec) * 1e-6;
+    startTime = endTime;
     refreshScreen ();
     controlPlayer (timeDifference);
-    startTime = endTime;
   }
 
   return 0;

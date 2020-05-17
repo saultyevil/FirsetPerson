@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /**
- *	@file     firstPerson.h
+ *  @file     firstPerson.h
  *  @date     May 2020
  *  @author   E. J. Parkinson
  *
@@ -18,10 +18,10 @@
 
 struct gameMap
 {
-	int      mapWidth;                  // The width of the map
-	int      mapHeight;                 // The height of the map
-	int      mapPoints;                 // The number of map points (width * height)
-	char    *map;                       // The map stored as a 1D whcar_t array
+  int      mapWidth;                  // The width of the map
+  int      mapHeight;                 // The height of the map
+  int      mapPoints;                 // The number of map points (width * height)
+  char    *map;                       // The map stored as a 1D whcar_t array
 };
 
 /* ************************************************************************** 
@@ -42,8 +42,8 @@ struct bTest
 
 struct gameConfig
 {
-	int             screenWidth;        // Terminal number of columns
-	int             screenHeight;       // Terminal number of rows
+  int             screenWidth;        // Terminal number of columns
+  int             screenHeight;       // Terminal number of rows
   wchar_t        *screen;             // Screen buffer
   WINDOW         *window;             // The window to draw to
   float           renderDepth;        // Maximum rendering depth for ray

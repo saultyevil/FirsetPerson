@@ -1,13 +1,16 @@
-/* Terminal.c */
-void terminalInit (void);
-void terminalRevert (void);
-void terminalUpdateSize (int sig);
-/* Utilities.c */
-void utilResetDisplay (void);
-void utilExit (char *s);
-/* Map.c */
-void mapInit (void);
-/* Input.c */
-void controlPlayer (float TimeDifference);
-/* Render.c */
-void refreshScreen (void);
+/* terminal.c */
+void terminalInit(void);
+void terminalRevert(void);
+void terminalUpdateSize(int sig);
+/* utilities.c */
+void sortBoundaryTest(struct bTest *boundaryTest);
+void utilExit(char *s);
+/* map.c */
+void mapInit(void);
+/* input.c */
+void controlPlayer(float timeDifference);
+/* render.c */
+void refreshScreen(void);
+/* main.c */
+void gameInit(void);
+int main(void);

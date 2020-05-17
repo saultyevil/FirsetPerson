@@ -14,6 +14,7 @@
 
 #define FIXED_MAP_WIDTH  16
 #define FIXED_MAP_HEIGHT 16
+#define MAP_INIT {0, 0, 0, NULL}
 
 struct gameMap
 {
@@ -23,7 +24,17 @@ struct gameMap
 	char    *map;                       // The map stored as a 1D whcar_t array
 };
 
-#define MAP_INIT {0, 0, 0, NULL}
+/* ************************************************************************** 
+ * Boundary testing structure
+ * ************************************************************************** */
+
+#define N_BOUNDARY_TESTS 4
+
+struct bTest 
+{
+  float distance;
+  float dotProduct;
+};
 
 /* ************************************************************************** 
  * Global configuration structure

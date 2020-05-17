@@ -8,36 +8,40 @@
  *
  * ************************************************************************** */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <unistd.h>
 
 #include "firstPerson.h"
 
-/** **************************************************************************
+/* ************************************************************************** */
+/** 
+ * @brief
  *
- *  @brief              Refresh the terminal screen
+ * @details
  *
- *  @return             void
- *
- *  @details
- *
- *  Resets the terminal display by clearing everything and repositioning the
- *  cursor or something. Can't quite remember what it's doing exactly.
- *
+ * This is an implementation of Bubble sort. Since N_BOUNDARY_TESTS = 4, 
+ * performance should not be a major problem (I think).
+ * 
  * ************************************************************************** */
 
 void
-utilResetDisplay (void)
+sortBoundaryTest (struct bTest *boundaryTest)
 {
-  /*
-   * \x1b is the escape character
-   * \x1b[ is an escape sequence
-   */
+  int     i, j;
+  struct  bTest temp;
 
-  write (STDOUT_FILENO, "\x1b[2J", 4);   // erase screen
-  write (STDOUT_FILENO, "\x1b[H", 3);    // reposition the cursor
+  for (i = 0; i < N_BOUNDARY_TESTS - 1; ++i)
+  {
+    for (j = 0; j < N_BOUNDARY_TESTS - i - 1; ++j)
+    {
+      if (boundaryTest[j].distance > boundaryTest[j + 1].distance)
+      {
+        temp = boundaryTest[j];
+        boundaryTest[j] = boundaryTest[j + 1];
+        boundaryTest[j + 1] = temp;
+      }
+    }
+  }
 }
 
 /** **************************************************************************
@@ -58,7 +62,7 @@ utilResetDisplay (void)
 void
 utilExit (char *s)
 {
-  utilResetDisplay ();
+  terminalRevert ();
   perror (s);
   exit (errno);
 }

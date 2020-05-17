@@ -9,7 +9,6 @@
 #include <math.h>
 #include <stdbool.h>
 #include <wchar.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 #include "firstPerson.h"
@@ -28,11 +27,16 @@ refreshScreen (void)
   int      x, y;
   int      testX, testY;
   int      ceilingHeight, floorHeight;
+  int      boundaryTestX, boundaryTestY;
+  int      boundaryIndex;
   bool     hitWall, hitBoundary;
-  float    distance, distanceToWall;
+  float    distanceToFloor, distanceToWall;
+  float    distance, dotProduct;
   float    eyeX, eyeY;
   float    rayAngle;
+  float    vX, vY;
   wchar_t  shade;
+  struct   bTest boundaryTest[N_BOUNDARY_TESTS];
 
   int      screenWidth     = gameConfig.screenWidth;
   int      screenHeight    = gameConfig.screenHeight;
@@ -44,6 +48,7 @@ refreshScreen (void)
   float    playerX         = gameConfig.playerX;
   float    playerY         = gameConfig.playerY;
   float    playerDirection = gameConfig.playerDirection;
+  float    boundLimit      = 0.005;
   char    *map             = gameConfig.gameMap.map;
   wchar_t *screen          = gameConfig.screen;
   WINDOW  *window          = gameConfig.window;
@@ -74,11 +79,37 @@ refreshScreen (void)
       // The Ray is in bounds and has hit a wall
       else
       {
-
+        // Now test to see if the Ray has hit a  boundary of a block
         if (map[testY * mapWidth + testX] == '#')
         {
           hitWall = true;
-          // TODO: test for wall boundaries
+
+          // To find boundaries, cast a ray to each corner of a block and
+          // measure the angle between this ray and the player's ray
+          boundaryIndex = 0;
+          
+          for (boundaryTestX = 0; boundaryTestX < 2; ++boundaryTestX)
+          {
+            for (boundaryTestY = 0; boundaryTestY < 2; ++boundaryTestY)
+            {
+              vY         = (float) testY + boundaryTestY - playerY;
+              vX         = (float) testX + boundaryTestX - playerX;
+              distance   = sqrt (vX * vX + vY * vY);
+              dotProduct = (eyeX * vX / distance) + (eyeY * vY / distance);
+              boundaryTest[boundaryIndex].distance   = distance;
+              boundaryTest[boundaryIndex].dotProduct = dotProduct;
+              boundaryIndex++;
+            }
+
+            // Sort from closest to farthest
+            sortBoundaryTest (boundaryTest);
+
+            // If the angle is less than some predefined limit, the ray is at
+            // a boundary. Note, the player can never see all four corners
+            if (acos (boundaryTest[0].dotProduct) < boundLimit) hitBoundary = true;
+            if (acos (boundaryTest[1].dotProduct) < boundLimit) hitBoundary = true;
+            if (acos (boundaryTest[2].dotProduct) < boundLimit) hitBoundary = true;
+          }                  
         }
       }
     }
@@ -87,11 +118,11 @@ refreshScreen (void)
     if      (distanceToWall <= renderDepth / 4.0) shade = 0x2588;
     else if (distanceToWall <= renderDepth / 3.0) shade = 0x2593;
     else if (distanceToWall <= renderDepth / 2.0) shade = 0x2592;
-    else if (distanceToWall <= renderDepth) shade = 0x2591;
-    else shade = ' ';
+    else if (distanceToWall <= renderDepth)       shade = 0x2591;
+    else                                          shade = ' ';
 
     // Make wall boundaries stand out
-    if (hitBoundary) shade = ' ';
+    if (hitBoundary)                              shade = ' ';
 
     // Calculate the distance to the ceiling and floor
     ceilingHeight = screenHeight / 2.0 - screenHeight / distanceToWall;
@@ -114,18 +145,31 @@ refreshScreen (void)
       // Draw the floor and shade depending on distance
       else
       {
-        distance = 1.0 - ((float) y - screenHeight / 2.0) / (screenHeight / 2.0);
-        if      (distance < 0.25) shade = '#';
-        else if (distance < 0.50) shade = 'x';
-        else if (distance < 0.75) shade = '.';
-        else if (distance < 0.90) shade = '-';
-        else shade = ' ';
+        distanceToFloor = 1.0 - ((float) y - screenHeight / 2.0) / (screenHeight / 2.0);
+        if      (distanceToFloor < 0.25) shade = '#';
+        else if (distanceToFloor < 0.50) shade = 'x';
+        else if (distanceToFloor < 0.75) shade = '.';
+        else if (distanceToFloor < 0.90) shade = '-';
+        else                             shade = ' ';
         screen[y * screenWidth + x] = shade;
         mvwprintw (window, y, x, "%lc", shade);
       }
     }
   }
 
+  // Add map to the top right of the screen 
+  for (x = 0; x < mapWidth; ++x)
+  {
+    for (y = 0; y < mapHeight; ++y)
+    {
+      mvwprintw (window, y, x, "%c", map[y * mapWidth + x]);
+    }
+  }
+
+  // Add P on the map to show where the player is
+  mvwprintw (window, (int) playerY, (int) playerX, "P");
+
+  // Refresh the NCurses window and NULL terminate the screen buffer
   wrefresh (window);
   screen[screenWidth * screenHeight] = '\0';
   gameConfig.screen = screen;

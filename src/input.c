@@ -16,7 +16,9 @@
  * @brief
  *
  * @details
- * 
+ *
+ * TODO: add sprinting
+ *
  * ************************************************************************** */
 
 void
@@ -40,6 +42,8 @@ controlPlayer (float timeDifference)
       case KEY_RESIZE:
         terminalUpdateSize (0);
         break;
+      case 's':
+      case 'S':
       case KEY_DOWN:
         playerX -= sin (playerDirection) * playerSpeed * timeDifference;
         playerY -= cos (playerDirection) * playerSpeed * timeDifference;
@@ -49,6 +53,8 @@ controlPlayer (float timeDifference)
           playerY += cos (playerDirection) * playerSpeed * timeDifference;
         }
         break;
+      case 'w':
+      case 'W':
       case KEY_UP:
         playerX += sin (playerDirection) * playerSpeed * timeDifference;
         playerY += cos (playerDirection) * playerSpeed * timeDifference;
@@ -58,13 +64,18 @@ controlPlayer (float timeDifference)
           playerY -= cos (playerDirection) * playerSpeed * timeDifference;
         }
         break;
+      case 'a':
+      case 'A':
       case KEY_LEFT:
         playerDirection -= (playerSpeed * 0.5) * timeDifference;
         break;
+      case 'd':
+      case 'D':
       case KEY_RIGHT:
         playerDirection += (playerSpeed * 0.5) * timeDifference;
         break;
       case 'q':
+      case 'Q':
         terminalRevert ();
         exit (EXIT_SUCCESS);
       default:

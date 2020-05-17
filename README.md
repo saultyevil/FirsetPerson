@@ -9,6 +9,11 @@ size of 12 pixels.
 
 ![Screenshot of the game](firstPerson.png)
 
+## Controls
+
+The player can be moved using the arrow keys or WASD. There is no strafing in
+the game, so LEFT and RIGHT (A and D) changes the direction of the perspective. 
+
 ## Building and Requirements
 
 This project uses NCurses 5 to write to the terminal window and requires your

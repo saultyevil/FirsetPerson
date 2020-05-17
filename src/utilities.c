@@ -1,7 +1,7 @@
 /** **************************************************************************
  *
- * @file util.c
- * @date 01/01/2019
+ * @file utilities.c
+ * @date May 2020
  * @author E. J. Parkinson
  *
  * @brief Utility functions for Kris.
@@ -13,7 +13,7 @@
 #include <errno.h>
 #include <unistd.h>
 
-#include "SimpleFP.h"
+#include "firstPerson.h"
 
 /** **************************************************************************
  *
@@ -29,7 +29,7 @@
  * ************************************************************************** */
 
 void
-UtilResetDisplay (void)
+utilResetDisplay (void)
 {
   /*
    * \x1b is the escape character
@@ -56,9 +56,9 @@ UtilResetDisplay (void)
  * ************************************************************************** */
 
 void
-UtilExit (char *s)
+utilExit (char *s)
 {
-  UtilResetDisplay ();
+  utilResetDisplay ();
   perror (s);
   exit (errno);
 }

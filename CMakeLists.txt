@@ -1,7 +1,7 @@
-# SimpleFP
-# A small program for rendering a 3D world on the command line
+# FirstPerson
+# A small program for projecting a 3D world in a terminal emulator
 
-project(SimpleFP)
+project(FirstPerson)
 cmake_minimum_required(VERSION 3.0)
 set(CMAKE_C_STANDARD 99)
 
@@ -9,12 +9,12 @@ add_compile_options(-Wall -Wextra)
 
 # Label the files which are required for the program
 set(SOURCE_FILES
-        src/Main.c
-        src/Terminal.c
-        src/Utilities.c
-        src/Map.c
-        src/Input.c
-        src/Render.c
+        src/main.c
+        src/terminal.c
+        src/utilities.c
+        src/map.c
+        src/input.c
+        src/render.c
 )
 
 # The curses library is stored in various places depending on system
@@ -26,5 +26,5 @@ elseif(APPLE)
 endif()
 
 # Create the executable and link the libraries
-add_executable(SimpleFP ${SOURCE_FILES})
-target_link_libraries(SimpleFP m ncursesw)
+add_executable(FirstPerson ${SOURCE_FILES})
+target_link_libraries(FirstPerson m ncursesw)

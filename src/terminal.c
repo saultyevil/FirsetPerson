@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /**
- * @file   Terminal.c
- * @date   01/01/2019
+ * @file   terminal.c
+ * @date   May 2020
  * @author E. J. Parkinson
  *
  * @brief Functions for setting up the terminal using NCurses.
@@ -12,7 +12,7 @@
 #include <ncurses.h>
 #include <locale.h>
 
-#include "SimpleFP.h"
+#include "firstPerson.h"
 
 /* ************************************************************************** */
 /**
@@ -23,14 +23,14 @@
  * ************************************************************************** */
 
 void
-TerminalInit (void)
+terminalInit (void)
 {  
-  int ScreenSize;
+  int screenSize;
 
   setlocale (LC_ALL, "");
 
   initscr (); 
-  getmaxyx (stdscr, GameConfig.ScreenHeight, GameConfig.ScreenWidth);
+  getmaxyx (stdscr, gameConfig.screenHeight, gameConfig.screenWidth);
   noecho ();
   cbreak ();
   keypad (stdscr, FALSE);  // Use NCurses defined FALSE, just in case ;-)
@@ -38,11 +38,11 @@ TerminalInit (void)
   refresh ();
 
   // Allocate memory for the screen buffer
-  ScreenSize        = GameConfig.ScreenHeight * GameConfig.ScreenWidth;
-  GameConfig.Screen = malloc (ScreenSize * sizeof *GameConfig.Screen + 1);
-  GameConfig.Window = newwin (GameConfig.ScreenHeight, GameConfig.ScreenWidth, 0, 0);
-  keypad (GameConfig.Window, TRUE);
-  nodelay (GameConfig.Window, TRUE);
+  screenSize        = gameConfig.screenHeight * gameConfig.screenWidth;
+  gameConfig.screen = malloc (screenSize * sizeof *gameConfig.screen + 1);
+  gameConfig.window = newwin (gameConfig.screenHeight, gameConfig.screenWidth, 0, 0);
+  keypad (gameConfig.window, TRUE);
+  nodelay (gameConfig.window, TRUE);
 }
 
 /* ************************************************************************** */
@@ -54,9 +54,9 @@ TerminalInit (void)
  * ************************************************************************** */
 
 void
-TerminalRevert (void)
+terminalRevert (void)
 {
-  delwin (GameConfig.Window);
+  delwin (gameConfig.window);
   endwin ();
 }  
 
@@ -75,11 +75,11 @@ TerminalRevert (void)
  * ************************************************************************** */
 
 void
-TerminalUpdateSize (int sig)
+terminalUpdateSize (int sig)
 {
   (void) sig;
 
-  TerminalRevert ();
-  TerminalInit ();
-  RefreshScreen ();
+  terminalRevert ();
+  terminalInit ();
+  refreshScreen ();
 }

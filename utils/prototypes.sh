@@ -1,2 +1,2 @@
 #!/bin/bash
-cproto Terminal.c Utilities.c Map.c Input.c Render.c > Functions.h
+cproto terminal.c utilities.c map.c input.c render.c main.c > functions.h
